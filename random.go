@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/brianvoe/gofakeit"
 	"math/rand"
 	"net/url"
 	"strings"
-
-	"github.com/brianvoe/gofakeit"
+	"time"
 )
 
 // RandResourceURI generates a random resource URI
@@ -29,4 +29,20 @@ func RandAuthUserID() string {
 func RandHTTPVersion() string {
 	versions := []string{"HTTP/1.0", "HTTP/1.1", "HTTP/2.0"}
 	return versions[rand.Intn(3)]
+}
+
+// RandPackageName returns a random package name
+func RandPackageName() string {
+
+	// PackageNames consists of Citrus package names
+	/*var PackageNames = map[string][]string{
+		"citrus": {"infrastructure.common", "utils.FacterInfo"},
+	}*/
+
+	PackageNames := []string{
+		"infrastructure.common",
+		"utils.FacterInfo",
+	}
+	rand.Seed(time.Now().UnixNano())
+	return PackageNames[rand.Intn(2)]
 }

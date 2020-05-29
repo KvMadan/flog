@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/brianvoe/gofakeit"
+	"strconv"
 	"strings"
 	"time"
-
-	"github.com/brianvoe/gofakeit"
 )
 
 const (
@@ -21,6 +21,8 @@ const (
 	RFC5424Log = "<%d>%d %s %s %s %d ID%d %s %s"
 	// CommonLogFormat : {host} {user-identifier} {auth-user-id} [{datetime}] "{method} {request} {protocol}" {response-code} {bytes}
 	CommonLogFormat = "%s - %s [%s] \"%s %s %s\" %d %d"
+	// CitrusLog : {Timestamp of millisecond precision}|{Log Level}|{Thread id}|{Package info}|{Actual log message which can be multi-line}
+	CitrusLog = "%s|DEBUG|pool-%d-thread-%d|%s|%s"
 )
 
 // NewApacheCommonLog creates a log string with apache common log format
@@ -110,5 +112,17 @@ func NewCommonLogFormat(t time.Time) string {
 		RandHTTPVersion(),
 		gofakeit.StatusCode(),
 		gofakeit.Number(0, 30000),
+	)
+}
+
+// CitrusLog creates a log string with citrus log format
+func NewCitrusLog(t time.Time) string {
+	return fmt.Sprintf(
+		CitrusLog,
+		t.Format(Citrus),
+		gofakeit.Number(0, 19),
+		gofakeit.Number(0, 5),
+		RandPackageName(),
+		"Threaded_execution channel created for key:rabbitmq.sea10.service-now.com/bigdata has ID:"+strconv.Itoa(gofakeit.Number(3000, 5000))+"in retry count:0 for routingKey:",
 	)
 }
